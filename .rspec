@@ -1,0 +1,5 @@
+--color
+-fp
+-Ilib
+-Ispec
+--require spec_helper

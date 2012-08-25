@@ -24,7 +24,7 @@ class Observer
 end
 
 class Playlist
-  include WeakObservable
+  include WeakObservable::Mixin
 end
 
 # Create an observer to wait for notifications.

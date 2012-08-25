@@ -1,0 +1,1 @@
+require 'weak_observable'

@@ -1,4 +1,5 @@
 require "weak_observable/version"
+require "weak_observable/mixin"
 
-module WeakObservable
+class WeakObservable
 end

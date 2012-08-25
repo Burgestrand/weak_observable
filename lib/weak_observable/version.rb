@@ -1,3 +1,3 @@
-module WeakObservable
+class WeakObservable
   VERSION = "0.0.0"
 end
