@@ -38,7 +38,12 @@ class WeakObservable
   # @param [#hash] observer
   # @param [String, Symbol] method
   # @return observer, as passed in.
+  # @raise ArgumentError if observer does not respodn to method.
   def add(observer, method = :update)
+    unless observer.respond_to?(method)
+      raise ArgumentError, "#{observer} does not respond to #{method}"
+    end
+
     synchronize do
       @callbacks[observer] = method
       @observers[key(observer)] = observer

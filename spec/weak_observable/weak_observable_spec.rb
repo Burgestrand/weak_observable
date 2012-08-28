@@ -1,25 +1,11 @@
+require 'ostruct'
+
 describe WeakObservable do
   let(:observable) { WeakObservable.new }
-  let(:observer) { stub(:update => nil) }
+  let(:observer)   { stub(:update => nil) }
 
   it "has a version" do
-    defined?(WeakObservable::VERSION).should eq "constant"
-  end
-
-  describe "mixin" do
-    let(:obj) do
-      Object.new.tap { |o| o.extend WeakObservable::Mixin }
-    end
-
-    describe "#observers" do
-      it "is a weak observable" do
-        obj.observers.should be_a WeakObservable
-      end
-
-      it "is memoized" do
-        obj.observers.should eql obj.observers
-      end
-    end
+    WeakObservable::VERSION.should be_a String
   end
 
   describe "#add and #notify" do
@@ -36,16 +22,28 @@ describe WeakObservable do
       observable.add(observer, :trigger)
       observable.notify
     end
+
+    it "does not allow duplicates" do
+      observer.should_receive(:update).once
+
+      observable.add(observer)
+      observable.add(observer)
+      observable.notify
+    end
+
+    it "raises an error if observer does not respond to method" do
+      expect { observable.add(stub) }.to raise_error(ArgumentError)
+    end
   end
 
   describe "#notify" do
-    it "passes along the given block" do
-      observer.should_receive(:update).and_return do |&block|
+    it "passes along any args given block" do
+      observer.should_receive(:update).with(1, 2).and_return do |&block|
         block.call(2)
       end
 
       observable.add(observer)
-      observable.notify { |x| x * 2 }.should eq [4]
+      observable.notify(1, 2) { |x| x * 2 }.should eq [4]
     end
 
     it "returns all return values" do
@@ -77,7 +75,8 @@ describe WeakObservable do
     stretches = 5
 
     threshold.times do
-      observer = stub(:update)
+      # stub with return value for method cannot be garbage collected.
+      observer = OpenStruct.new(:update => nil)
       observable.add(observer)
       ObjectSpace.define_finalizer(observer, finalizer)
     end
