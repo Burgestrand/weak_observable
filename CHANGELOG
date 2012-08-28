@@ -1,3 +1,7 @@
+# [v1.0.1][]
+
+- Updated README to fix faulty example.
+
 # [v1.0.0][]
 
 Initial release. WeakObservable and Hub!

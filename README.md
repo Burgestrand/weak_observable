@@ -31,8 +31,7 @@ end
 observer = Observer.new
 
 playlist = Playlist.new
-playlist.observers << observer
-playlist.observers.count # => 1
+playlist.observers.add(observer)
 
 # Notify all observers. Any arguments and given block goes out to them all.
 playlist.observers.notify(:ping)
@@ -42,7 +41,6 @@ playlist.observers.notify(:ping)
 observer = nil
 
 # Some time passes, ruby garbage collection eventually kicks in, and now…
-playlist.observers.count # => 0
 playlist.observers.notify(:ping) # nothing happens, we have no observers.
 ```
 
