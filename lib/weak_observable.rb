@@ -1,6 +1,7 @@
 require "ref"
 require "weak_observable/version"
 require "weak_observable/mixin"
+require "weak_observable/hub"
 
 # WeakObservable is like the Observable from standard library,
 # with a slightly different API and one important difference:

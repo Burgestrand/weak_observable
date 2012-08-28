@@ -65,6 +65,23 @@ describe WeakObservable do
       observable.delete(observer)
       observable.notify.should eq []
     end
+
+    it "does not remove any other observer" do
+      observer1 = stub(:update => 1)
+      observer2 = stub(:update => 2)
+
+      observer2.should_not_receive(:update)
+
+      observable.add(observer1)
+      observable.add(observer2)
+      observable.delete(observer2)
+
+      observable.notify.should eq [1]
+    end
+
+    it "does not crash removing a non-existing observer" do
+      expect { observable.delete(observer) }.to_not raise_error
+    end
   end
 
   specify "observers can be garbage collected" do
