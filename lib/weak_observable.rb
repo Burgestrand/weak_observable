@@ -30,6 +30,11 @@ class WeakObservable
 
   # Add an observer.
   #
+  # @note You cannot add the same observer multiple times. The
+  #       most recent call overrides any earlier calls; because
+  #       of this you can change the method for an observer by
+  #       calling add with a new method.
+  #
   # @param [#hash] observer
   # @param [String, Symbol] method
   # @return observer, as passed in.
