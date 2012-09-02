@@ -44,6 +44,50 @@ observer = nil
 playlist.observers.notify(:ping) # nothing happens, we have no observers.
 ```
 
+There is also the Hub, which is a mix between a WeakObservable and a Hash.
+You add observers by associating them with a key. A key can have multiple
+observers. When you notify observers, you supply the key, and observers on
+that key will be notified, but not any other observers.
+
+```ruby
+require 'weak_observable'
+
+hub = WeakObservable::Hub.new
+
+class Ninja
+  def update(event, *args)
+    puts "Ninjas: #{event}"
+  end
+end
+
+class Pirate
+  def update(event, *args)
+    puts "Pirates: #{event}"
+  end
+end
+
+ninja_a = Ninja.new
+ninja_b = Ninja.new
+
+pirate_a = Pirate.new
+pirate_b = Pirate.new
+
+hub.add(Ninja, ninja_a)
+hub.add(Ninja, ninja_b)
+hub.add(Pirate, pirate_a)
+hub.add(Pirate, pirate_b)
+
+hub.notify(Pirate, "Ninjarrrs arrr attacking!")
+# ^ notifies all the pirates that ninjas are attacking.
+
+hub.notify(Ninja, "All pirates are down.")
+# ^ notifies all ninjas the pirates are all dead.
+```
+
+When all objects of a given key has been garbage collected, that key will
+also be garbage collected. Because of this property Hubs can be extremely
+useful interfacing with asynchronous C libraries and their callbacks.
+
 ## Contributing
 
 Please fork the repository and clone it. To get started with development you’ll
