@@ -1,4 +1,4 @@
-# WeakObservable
+# WeakObservable [![Build Status](https://secure.travis-ci.org/Burgestrand/weak_observable.png)](http://travis-ci.org/Burgestrand/weak_observable)
 
 WeakObservable is very similar to Observable from ruby’ standard library, but
 with the very important difference in that it allows it’s subscribers to be
