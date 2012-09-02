@@ -88,6 +88,14 @@ When all objects of a given key has been garbage collected, that key will
 also be garbage collected. Because of this property Hubs can be extremely
 useful interfacing with asynchronous C libraries and their callbacks.
 
+## Supported platforms
+
+- CRuby 1.9.2, 1.9.3
+- JRuby 1.9-mode
+- Rubinius 1.9-mode
+
+I will not be supporting Ruby 1.8.
+
 ## Contributing
 
 Please fork the repository and clone it. To get started with development you’ll
