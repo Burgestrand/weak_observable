@@ -85,26 +85,19 @@ describe WeakObservable do
   end
 
   specify "observers can be garbage collected" do
-    counter   = 0
-    finalizer = lambda { |_| counter += 1 }
+    Ref::Mock.use do
+      observer1 = double
+      observer2 = double
 
-    threshold = 5
-    stretches = 5
+      observer1.should_not_receive(:update)
+      observer2.should_receive(:update)
 
-    threshold.times do
-      # stub with return value for method cannot be garbage collected.
-      observer = OpenStruct.new(:update => nil)
-      observable.add(observer)
-      ObjectSpace.define_finalizer(observer, finalizer)
+      observable.add(observer1)
+      observable.add(observer2)
+
+      Ref::Mock.gc(observer1)
+
+      observable.notify
     end
-
-    (threshold * stretches).times do
-      GC.start
-      sleep 0.001
-    end
-
-    # if one is garbage collected, we can expect all to eventually be
-    # as well
-    counter.should be > 1
   end
 end

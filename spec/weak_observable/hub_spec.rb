@@ -127,51 +127,28 @@ describe WeakObservable::Hub do
   end
 
   specify "observers can be garbage collected" do
-    counter   = 0
-    finalizer = lambda { |_| counter += 1 }
+    Ref::Mock.use do
+      observer1 = double
+      observer2 = double
 
-    threshold = 5
-    stretches = 5
+      observer1.should_not_receive(:update)
+      observer2.should_receive(:update)
 
-    threshold.times do
-      # stub with return value for method cannot be garbage collected.
-      observer = OpenStruct.new(:update => nil)
-      observable.add(key, observer)
-      ObjectSpace.define_finalizer(observer, finalizer)
+      observable.add(key, observer1)
+      observable.add(key, observer2)
+
+      Ref::Mock.gc(observer1)
+
+      observable.notify(key)
     end
-
-    (threshold * stretches).times do
-      GC.start
-      sleep 0.001
-    end
-
-    # if one is garbage collected, we can expect all to eventually be
-    # as well
-    counter.should be > 1
   end
 
   specify "entire keys can be garbage collected" do
-    counter   = 0
-    finalizer = lambda { |_| counter += 1 }
+    mapping = lambda { |key| observable.instance_eval { @mapping }[key] }
 
-    threshold = 5
-    stretches = 5
-
-    threshold.times do |i|
-      # stub with return value for method cannot be garbage collected.
-      observer = OpenStruct.new(:update => nil)
-      observable.add(key + i, observer)
-      ObjectSpace.define_finalizer(observer, finalizer)
-    end
-
-    (threshold * stretches).times do
-      GC.start
-      sleep 0.001
-    end
-
-    # some very intimate introspection here
-    observable.instance_eval do
-      @mapping.to_a.length.should < threshold
+    Ref::Mock.use do
+      observable.add(key, observer)
+      expect { Ref::Mock.gc }.to change { mapping[key] }.to(nil)
     end
   end
 end
