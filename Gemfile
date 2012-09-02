@@ -1,3 +1,8 @@
 source :rubygems
 gemspec
-gem 'yard'
+
+gem 'rake'
+
+group :non_essentials do
+  gem 'yard'
+end

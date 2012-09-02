@@ -7,6 +7,7 @@ begin
   require 'yard'
   require 'yard/rake/yardoc_task'
   YARD::Rake::YardocTask.new
+rescue LoadError
 end
 
 require 'rspec/core/rake_task'
