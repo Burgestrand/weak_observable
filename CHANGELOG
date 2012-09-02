@@ -1,6 +1,7 @@
 # [v1.0.1][]
 
 - Updated README to fix faulty example.
+- Fix Hub throwing warnings when adding an observer.
 
 # [v1.0.0][]
 

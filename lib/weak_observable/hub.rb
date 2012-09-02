@@ -82,11 +82,12 @@ class WeakObservable
     # when all observers are gone, the observables for the address
     # they are registered to is also eligible for garbage collection.
     def backrefs_of(object)
-      # The object may be attached to several hubs, so make sure
-      # we don’t fuck up by mapping our own object_id first.
-      ivar = '@__observable__hubs__'
-      back_hash = object.instance_variable_get(ivar)
-      back_hash ||= Hash.new
+      ivar = :@__observable__hubs__
+      back_hash = if object.instance_variable_defined?(ivar)
+        object.instance_variable_get(ivar)
+      else
+        Hash.new
+      end
       object.instance_variable_set(ivar, back_hash)
 
       # An object may also be attached to several addresses within

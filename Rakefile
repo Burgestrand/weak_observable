@@ -10,6 +10,8 @@ begin
 end
 
 require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new
+RSpec::Core::RakeTask.new do |task|
+  task.ruby_opts = '-W'
+end
 
 task :default => :spec
