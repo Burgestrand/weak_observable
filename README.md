@@ -90,7 +90,7 @@ useful interfacing with asynchronous C libraries and their callbacks.
 
 ## Supported platforms
 
-- CRuby 1.9.2, 1.9.3
+- CRuby 1.9.2, 1.9.3, 2.0.0
 - JRuby 1.9-mode
 - Rubinius 1.9-mode
 
