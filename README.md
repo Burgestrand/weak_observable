@@ -1,7 +1,7 @@
 # WeakObservable [![Build Status](https://travis-ci.org/Burgestrand/weak_observable.png?branch=master)](https://travis-ci.org/Burgestrand/weak_observable)
 
 WeakObservable is very similar to Observable from ruby’ standard library, but
-with the very important difference in that it allows it’s subscribers to be
+with the very important difference in that it allows its subscribers to be
 garbage collected.
 
 ## Usage
